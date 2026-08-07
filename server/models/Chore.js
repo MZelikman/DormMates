@@ -4,12 +4,10 @@ const choreSchema = new mongoose.Schema({
         name: {
             type: String,
             required: true,
-            unique: true,
         },
         house: {
             type: String,
             required: true,
-            unique: true,
         },
         frequencyDays: {
             type: Number,
