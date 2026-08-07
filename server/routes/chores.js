@@ -1,7 +1,72 @@
 import express from 'express';
-import { Chore } from '../models/Chore.js'
+import Chore from '../models/Chore.js'
 
-const express = require('express');
 const router = express.Router();
-const model = require('../models/Chore');
+
+
+router.post('/', async (request, response) => {
+    try {
+        if (
+            !request.body.name ||
+            !request.body.house ||
+            !request.body.frequencyDays ||
+            !request.body.rotationOrder ||
+            !request.body.dueDate
+        ) {
+            return response.status(400).send({
+                message: 'Send all required fields: name, house, frequencyDays, rotationOrder, dueDate',
+            });
+        }
+
+        const newChore = {
+            name: request.body.name,
+            house: request.body.house,
+            frequencyDays: request.body.frequencyDays,
+            rotationOrder: request.body.rotationOrder,
+            dueDate: request.body.dueDate,
+        };
+
+        const chore = await Chore.create(newChore);
+
+        return response.status(201).send(chore);
+
+    } catch (error) {
+        console.log(error.message);
+        response.status(500).send({ message: error.message });
+    }
+});
+
+router.delete('/:id', async (request, response) => {
+    try {
+        const { id } = request.params;
+
+        const chore = await Chore.findByIdAndDelete(id);
+
+        if (!chore) {
+            return response.status(404).send({ message: 'Chore not found' });
+        }
+
+        return response.status(200).send({ message: 'Chore deleted successfully' });
+
+    } catch (error) {
+        console.log(error.message);
+        response.status(500).send({ message: error.message });
+    }
+});
+
+router.get('/', async (request, response) => {
+    try {
+        const chores = await Chore.find({});
+
+        return response.status(200).json(chores);
+
+    } catch (error) {
+        console.log(error.message);
+        response.status(500).send({ message: error.message });
+    }
+});
+
+export default router;
+
+
 

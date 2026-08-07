@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
 const choreSchema = new mongoose.Schema({
         name: {
@@ -37,4 +37,4 @@ const choreSchema = new mongoose.Schema({
     },
     { timestamps: true });
 
-module.exports = mongoose.model('Chore', choreSchema);
+export default mongoose.model('Chore', choreSchema);
