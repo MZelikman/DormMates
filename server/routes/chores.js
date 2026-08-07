@@ -66,6 +66,38 @@ router.get('/', async (request, response) => {
     }
 });
 
+router.post('/:id/complete', async (request, response) => {
+    try {
+
+        const { id } = request.params;
+
+        const chore = await Chore.findById(id);
+
+        if (!chore) {
+            return response.status(404).send({ message: 'Chore not found' });
+        }
+
+        const roommatesNum = chore.rotationOrder.length;
+
+        if (roommatesNum > 0) {
+            chore.currentChoice = (chore.currentChoice + 1) % roommatesNum;
+        }
+
+        chore.lastCompletedAt = new Date();
+
+        const nextDue = new Date();
+        nextDue.setDate(nextDue.getDate() + chore.frequencyDays);
+        chore.dueDate = nextDue;
+
+        await chore.save();
+        return response.status(200).json(chore);
+
+    } catch (error) {
+        console.log(error.message);
+        response.status(500).send({ message: error.message });
+    }
+});
+
 export default router;
 
 

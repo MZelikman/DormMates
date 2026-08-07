@@ -18,7 +18,7 @@ const choreSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Roommate',
         }],
-        currentChose: {
+        currentChoice: {
             type: Number,
             required: true,
             default: 0,
