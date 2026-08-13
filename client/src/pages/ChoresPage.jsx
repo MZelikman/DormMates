@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getChores, addChore, completeChore, deleteChore, getRoommates } from '../api.js';
+import { NURBSCurve } from 'three/examples/jsm/Addons.js';
 
 
 function ChoresPage() {
@@ -36,12 +37,46 @@ function ChoresPage() {
     }
   }
 
+  const handleAddChore = async (e) => {
+    e.preventDefault();
+    if (!choreName.trim() || selectedRoommates.length === 0){
+      return;
+    }
 
+    const nextDue = new Date();
+    nextDue.setDate(nextDue.getDate() + Number(frequencyDays));
+
+
+    await addChore({
+      name: choreName,
+      house: 'default-house',
+      frequencyDays: Number(frequencyDays),
+      rotationOrder: selectedRoommates,
+      dueDate: nextDue,
+    });
+
+    setChoreName('');
+    loadChores();
+
+  }
+
+  const deletingChore = async (id) => {
+    await deleteChore(id);
+    loadChores();
+  };
+
+  const handleComplete = async (id) => {
+    await completeChore(id);
+    loadChores();
+  };
 
 
   return (
     <div>
       <h1>Chores</h1>
+
+
+      
     </div>
   );
 }
