@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { getChores, addChore, completeChore, deleteChore, getRoommates } from '../api.js';
-import { NURBSCurve } from 'three/examples/jsm/Addons.js';
 
 
 function ChoresPage() {
@@ -75,7 +74,48 @@ function ChoresPage() {
     <div>
       <h1>Chores</h1>
 
+      <form onSubmit = {handleAddChore}>
+        <input
+            type="text"
+            value={choreName}
+            onChange={(event) => setChoreName(event.target.value)}
+            placeholder='Chore name'
+        />
 
+        <select value={frequencyDays} onChange={(event) => setFrequencyDays(event.target.value)}>
+          <option value={7}>Weekly</option>
+          <option value={14}>Biweekly</option>
+          <option value={1}>Daily</option>
+        </select>
+
+
+        <div>
+          <span>Rotation:</span>
+            {roommates.map((r) => (
+              <label key={r._id}>
+                <input
+                  type="checkbox"
+                  checked={selectedRoommates.includes(r._id)}
+                  onChange={() => toggleRoommate(r._id)}
+                />
+                {r.name}
+              </label>
+            ))}
+        </div>
+
+
+        <button type="submit">Add Chore</button>
+      </form>
+
+      <ul>
+        {chores.map((chore) => (
+          <li key={chore._id}>
+            {chore.name}
+            <button onClick={() => handleComplete(chore._id)}>Complete</button>
+            <button onClick={() => deletingChore(chore._id)}>Delete</button>
+          </li>
+        ))}
+        </ul>
       
     </div>
   );
