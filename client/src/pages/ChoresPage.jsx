@@ -65,6 +65,7 @@ function ChoresPage() {
   };
 
   const handleComplete = async (id) => {
+    console.log('handleComplete called with id:', id);
     await completeChore(id);
     loadChores();
   };
@@ -110,7 +111,9 @@ function ChoresPage() {
       <ul>
         {chores.map((chore) => (
           <li key={chore._id}>
-            {chore.name}
+            <strong>{chore.name}</strong>
+            <p>Due: {new Date(chore.dueDate).toLocaleDateString()}</p>
+            <p>Assignee index: {chore.currentAssigneeIndex}</p>
             <button onClick={() => handleComplete(chore._id)}>Complete</button>
             <button onClick={() => deletingChore(chore._id)}>Delete</button>
           </li>
