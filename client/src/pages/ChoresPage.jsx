@@ -65,6 +65,7 @@ function ChoresPage() {
   };
 
   const handleComplete = async (id) => {
+    console.log('handleComplete called with id:', id);
     await completeChore(id);
     loadChores();
   };

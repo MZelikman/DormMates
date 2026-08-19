@@ -83,7 +83,7 @@ router.post('/:id/complete', async (request, response) => {
             chore.currentChoice = (chore.currentChoice + 1) % roommatesNum;
         }
 
-        chore.lastCompletedAt = new Date();
+        chore.lastCompleted = new Date();
 
         const nextDue = new Date();
         nextDue.setDate(nextDue.getDate() + chore.frequencyDays);
